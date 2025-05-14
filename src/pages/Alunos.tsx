@@ -17,10 +17,20 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 
+// Define um tipo para o aluno para evitar problemas de tipagem
+type Aluno = {
+  id: number;
+  nome: string;
+  email: string;
+  cpf: string;
+  plano: string;
+  dataContrato: string;
+};
+
 const Alunos = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedAluno, setSelectedAluno] = useState<any>(null);
+  const [selectedAluno, setSelectedAluno] = useState<Aluno | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   
@@ -31,36 +41,49 @@ const Alunos = () => {
   };
 
   const handleEditAluno = (aluno: any) => {
+    // Verificar se o aluno existe antes de tentar acessar suas propriedades
+    if (!aluno) return;
+    
     setSelectedAluno({
       id: aluno.id,
-      nome: aluno.nome,
-      email: "email@exemplo.com", // Mock data
-      cpf: "123.456.789-00", // Mock data
-      plano: aluno.plano,
-      dataContrato: "2023-01-01", // Mock data
+      nome: aluno.nome || "",
+      email: aluno.email || "email@exemplo.com", // Mock data
+      cpf: aluno.cpf || "123.456.789-00", // Mock data
+      plano: aluno.plano || "",
+      dataContrato: aluno.dataContrato || "2023-01-01", // Mock data
     });
     setIsEditing(true);
     setIsModalOpen(true);
   };
 
   const handleDeleteAluno = (alunoId: number) => {
-    setDeleteId(alunoId);
-    setIsDeleteDialogOpen(true);
+    if (alunoId) {
+      setDeleteId(alunoId);
+      setIsDeleteDialogOpen(true);
+    }
   };
 
   const confirmDelete = () => {
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Aluno excluído",
-        description: "O aluno foi excluído com sucesso.",
-      });
+    // Verificar se há um ID para excluir
+    if (deleteId) {
+      // Simulate API call
+      setTimeout(() => {
+        toast({
+          title: "Aluno excluído",
+          description: "O aluno foi excluído com sucesso.",
+        });
+        setIsDeleteDialogOpen(false);
+        setDeleteId(null);
+      }, 500);
+    } else {
       setIsDeleteDialogOpen(false);
-      setDeleteId(null);
-    }, 500);
+    }
   };
 
   const handleViewContract = (alunoId: number) => {
+    // Verificar se o ID é válido
+    if (!alunoId) return;
+    
     // Simulate opening a contract
     toast({
       title: "Visualizando contrato",
@@ -95,7 +118,7 @@ const Alunos = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           isEditing={isEditing}
-          initialData={selectedAluno}
+          initialData={selectedAluno || undefined}
         />
 
         {/* Delete Confirmation Dialog */}

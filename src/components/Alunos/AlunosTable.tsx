@@ -78,7 +78,7 @@ export function AlunosTable({ onEdit, onDelete, onViewContract }: AlunosTablePro
   
   // Filter students based on search term
   const filteredAlunos = alunos.filter(aluno =>
-    aluno.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    aluno && aluno.nome && aluno.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -134,12 +134,14 @@ export function AlunosTable({ onEdit, onDelete, onViewContract }: AlunosTablePro
                     <TableCell>
                       <div className="flex flex-col">
                         <span>{aluno.contratoVenceEm}</span>
-                        {aluno.diasRestantes < 0 ? (
-                          <span className="text-xs text-red-600">Vencido há {Math.abs(aluno.diasRestantes)} dias</span>
-                        ) : aluno.diasRestantes <= 30 ? (
-                          <span className="text-xs text-yellow-600">Vence em {aluno.diasRestantes} dias</span>
-                        ) : (
-                          <span className="text-xs text-gray-500">Em {aluno.diasRestantes} dias</span>
+                        {typeof aluno.diasRestantes === 'number' && (
+                          aluno.diasRestantes < 0 ? (
+                            <span className="text-xs text-red-600">Vencido há {Math.abs(aluno.diasRestantes)} dias</span>
+                          ) : aluno.diasRestantes <= 30 ? (
+                            <span className="text-xs text-yellow-600">Vence em {aluno.diasRestantes} dias</span>
+                          ) : (
+                            <span className="text-xs text-gray-500">Em {aluno.diasRestantes} dias</span>
+                          )
                         )}
                       </div>
                     </TableCell>

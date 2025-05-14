@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -25,15 +26,35 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#0066FF',
+					foreground: 'hsl(var(--primary-foreground))',
+					50: '#E6F0FF',
+					100: '#CCE0FF',
+					200: '#99C2FF',
+					300: '#66A3FF',
+					400: '#3385FF',
+					500: '#0066FF',
+					600: '#0052CC',
+					700: '#003D99',
+					800: '#002966',
+					900: '#001433',
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#00C08B',
+					foreground: 'hsl(var(--secondary-foreground))',
+					50: '#E6FAF5',
+					100: '#CCF5EB',
+					200: '#99EBD7',
+					300: '#66E0C3',
+					400: '#33D6AF',
+					500: '#00C08B',
+					600: '#009A6F',
+					700: '#007353',
+					800: '#004D38',
+					900: '#00261C',
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
+					DEFAULT: '#FF4D4F',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
@@ -52,16 +73,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				warning: {
+					DEFAULT: '#FAAD14',
+					foreground: '#FFFFFF'
+				},
+				success: {
+					DEFAULT: '#52C41A',
+					foreground: '#FFFFFF'
 				}
+			},
+			boxShadow: {
+				'soft': '0 4px 10px rgba(0, 0, 0, 0.05)',
+				'soft-lg': '0 10px 25px rgba(0, 0, 0, 0.06)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +107,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'fade-out': {
+					'0%': { opacity: '1', transform: 'translateY(0)' },
+					'100%': { opacity: '0', transform: 'translateY(10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'fade-out': 'fade-out 0.3s ease-out',
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

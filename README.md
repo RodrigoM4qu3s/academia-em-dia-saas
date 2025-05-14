@@ -1,73 +1,137 @@
-# Welcome to your Lovable project
 
-## Project info
+# GymFlow Brasil - Sistema de Gestão para Academias
 
-**URL**: https://lovable.dev/projects/a6c7f476-75c4-4353-b492-2d82c977faa4
+Um sistema completo para gestão de academias no Brasil, com módulos para controle de alunos, cobranças automatizadas, contratos e relatórios gerenciais.
 
-## How can I edit this code?
+## Funcionalidades
 
-There are several ways of editing your application.
+- 🔐 **Autenticação segura** com sistema de login e papéis de usuário
+- 📊 **Dashboard** com indicadores de performance e gráficos
+- 👥 **Gestão de alunos** com cadastro completo e status de contrato
+- 💰 **Cobranças automatizadas** via Pix, boleto ou cartão (integração Asaas)
+- 📋 **Controle de contratos** com alertas de vencimento
+- 📈 **Relatórios detalhados** de faturamento com exportação em CSV/PDF
+- ⚙️ **Configurações flexíveis** para dados da academia e integrações
 
-**Use Lovable**
+## Tecnologias
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a6c7f476-75c4-4353-b492-2d82c977faa4) and start prompting.
+- **Frontend**: React + TypeScript + Vite
+- **UI/UX**: Tailwind CSS + shadcn/ui components
+- **Estado**: TanStack Query
+- **Rotas**: React Router Dom
+- **Gráficos**: Recharts
 
-Changes made via Lovable will be committed automatically to this repo.
+## Começando
 
-**Use your preferred IDE**
+### Pré-requisitos
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js (v16+)
+- npm ou yarn
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Instalação para desenvolvimento local
 
-Follow these steps:
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/gymflow-brasil.git
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Entre no diretório
+cd gymflow-brasil
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Instale as dependências
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Implantação com Docker
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Construa a imagem
+docker build -t gymflow-brasil .
 
-**Use GitHub Codespaces**
+# Execute o container
+docker run -p 8080:8080 gymflow-brasil
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Docker Compose para ambiente completo (frontend + backend)
 
-## What technologies are used for this project?
+Crie um arquivo `docker-compose.yml` na raiz do projeto:
 
-This project is built with:
+```yaml
+version: '3.8'
+services:
+  frontend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://backend:3000
+      
+  backend:
+    image: gymflow-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/gymflow
+      
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=gymflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+volumes:
+  postgres_data:
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Execute com:
 
-## How can I deploy this project?
+```bash
+docker-compose up -d
+```
 
-Simply open [Lovable](https://lovable.dev/projects/a6c7f476-75c4-4353-b492-2d82c977faa4) and click on Share -> Publish.
+## Observabilidade
 
-## Can I connect a custom domain to my Lovable project?
+### Logs e Monitoramento
 
-Yes, you can!
+O sistema está preparado para integração com Prometheus e Grafana:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Os logs são estruturados em formato JSON
+2. Métricas importantes são expostas em `/metrics`
+3. Dashboard Grafana pré-configurados estão disponíveis em `/grafana-dashboards`
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Alertas
+
+Configure alertas de:
+
+- Contratos prestes a vencer
+- Falhas em cobranças
+- Picos de uso do sistema
+
+## Estrutura Multi-tenant
+
+O sistema é construído com uma arquitetura multi-tenant, permitindo:
+
+- Isolamento de dados entre academias
+- Customização de telas e funcionalidades por cliente
+- Escalabilidade independente por tenant
+
+## Contribuindo
+
+1. Faça um fork do projeto
+2. Crie sua branch de feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas alterações (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.

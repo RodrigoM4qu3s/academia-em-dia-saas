@@ -15,6 +15,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 type NavItemProps = {
   to: string;
@@ -45,10 +46,11 @@ type DashboardLayoutProps = {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { signOut, usuario } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
-  const handleLogout = () => {
-    // In a real app, handle logout logic here
+  const handleLogout = async () => {
+    await signOut();
     navigate('/login');
   };
 
@@ -139,11 +141,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="font-medium">Admin</p>
-                <p className="text-sm text-gray-500">Academia Exemplo</p>
+                <p className="font-medium">{usuario?.nome || 'Usuário'}</p>
+                <p className="text-sm text-gray-500">{usuario?.role || 'Administrador'}</p>
               </div>
               <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="font-medium">A</span>
+                <span className="font-medium">{usuario?.nome ? usuario.nome.charAt(0) : 'U'}</span>
               </div>
             </div>
           </div>

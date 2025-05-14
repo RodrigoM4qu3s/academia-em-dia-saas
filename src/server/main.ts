@@ -1,4 +1,5 @@
 
+import "reflect-metadata";
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../modules/AppModule';
 
@@ -17,4 +18,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-

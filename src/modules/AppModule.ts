@@ -9,4 +9,3 @@ import { SupabaseAuthService } from '../services/SupabaseAuthService';
   providers: [SupabaseAuthService],
 })
 export class AppModule {}
-

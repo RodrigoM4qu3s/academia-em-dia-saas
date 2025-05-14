@@ -1,6 +1,8 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class SupabaseAuthService {
   private supabase: SupabaseClient;
 
@@ -80,4 +82,3 @@ export class SupabaseAuthService {
     }
   }
 }
-

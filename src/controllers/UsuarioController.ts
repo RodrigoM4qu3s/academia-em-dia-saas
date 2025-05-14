@@ -7,9 +7,9 @@ import { SupabaseAuthService } from '../services/SupabaseAuthService';
 export class UsuarioController {
   constructor(private authService: SupabaseAuthService) {}
 
-  @UseGuards(SupabaseAuthGuard)
   @Get('perfil')
-  async obterPerfil(@Req() req) {
+  @UseGuards(SupabaseAuthGuard)
+  async obterPerfil(@Req() req: any) {
     // req.user foi adicionado pelo SupabaseAuthGuard
     const userId = req.user.id;
     return this.authService.obterPerfilUsuario(userId);

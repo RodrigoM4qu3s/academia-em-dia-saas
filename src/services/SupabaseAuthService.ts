@@ -1,43 +1,45 @@
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class SupabaseAuthService {
   private supabase: SupabaseClient;
 
   constructor() {
-    // Em produção, essas variáveis viriam do .env do servidor
-    const supabaseUrl = process.env.SUPABASE_URL || 'https://xyzcompany.supabase.co';
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || 'sua-chave-de-serviço';
+    const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://example.supabase.co';
+    const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
     
     this.supabase = createClient(supabaseUrl, supabaseServiceKey);
   }
 
-  async verificarToken(token: string) {
+  async verificarToken(token: string): Promise<any> {
     try {
+      // Verificar o JWT com o Supabase
       const { data, error } = await this.supabase.auth.getUser(token);
       
       if (error) {
         throw new Error('Token inválido');
       }
       
+      // Retorna o usuário se o token for válido
       return data.user;
     } catch (error) {
       throw new Error('Erro ao verificar token');
     }
   }
 
-  async obterPerfilUsuario(userId: string) {
+  async obterPerfilUsuario(userId: string): Promise<any> {
     try {
+      // Buscar os dados do perfil do usuário
       const { data, error } = await this.supabase
         .from('usuarios')
         .select('*')
         .eq('id', userId)
         .single();
-        
+      
       if (error) {
-        throw new Error('Erro ao buscar perfil do usuário');
+        throw new Error('Erro ao buscar perfil');
       }
       
       return data;
@@ -46,39 +48,22 @@ export class SupabaseAuthService {
     }
   }
 
-  async criarUsuarioAcademia(userId: string, nome: string) {
+  async atualizarPerfilUsuario(userId: string, dados: any): Promise<any> {
     try {
-      // Criar academia padrão
-      const { data: academyData, error: academyError } = await this.supabase
-        .from('academias')
-        .insert([{ nome: 'Minha Academia' }])
+      const { data, error } = await this.supabase
+        .from('usuarios')
+        .update(dados)
+        .eq('id', userId)
         .select()
         .single();
-
-      if (academyError) {
-        throw new Error('Erro ao criar academia padrão');
+        
+      if (error) {
+        throw new Error('Erro ao atualizar perfil');
       }
-
-      // Criar perfil do usuário com a academia vinculada
-      const { error: userError } = await this.supabase
-        .from('usuarios')
-        .insert([{
-          id: userId,
-          nome,
-          role: 'Administrador',
-          academy_id: academyData.id,
-        }]);
-
-      if (userError) {
-        throw new Error('Erro ao criar perfil do usuário');
-      }
-
-      return {
-        userId,
-        academyId: academyData.id
-      };
+      
+      return data;
     } catch (error) {
-      throw new Error('Erro ao criar usuário e academia');
+      throw new Error('Erro ao atualizar perfil do usuário');
     }
   }
 }
